@@ -15,14 +15,29 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/users", (req, res) => {
-    res.send(mockUsers);
+    console.log(req.query);
+    const {
+        query: { filter, value },
+    } = req;
+
+    //when filter and value are undefined
+    // if (!filter && !value) return res.send(mockUsers);
+
+    if (filter && value)
+        return res.send(
+            mockUsers.filter((user) => user[filter].includes(value))
+        );
+    
+    return response.send(mockUsers)
+    
 });
 
+//route parameters
 app.get('/api/users/:id', (req, res) => {
     console.log(req.params);
     const parsedId = parseInt(req.params.id);
     console.log(parsedId);
-    if(isNaN(parsedId)) return res.status(400).send({msg: 'Bad Request. Invalid Number'});
+    if (isNaN(parsedId)) return res.status(400).send({ msg: 'Bad Request. Invalid Number' });
 
     const findUser = mockUsers.find((user) => user.id === parsedId)
     if (!findUser) return res.sendStatus(404);
