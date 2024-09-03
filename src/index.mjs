@@ -28,7 +28,7 @@ app.get("/api/users", (req, res) => {
             mockUsers.filter((user) => user[filter].includes(value))
         );
     
-    return response.send(mockUsers)
+    return res.send(mockUsers)
     
 });
 
