@@ -48,7 +48,7 @@ app.get('/api/users/:id', (req, res) => {
     console.log(req.params);
     const parsedId = parseInt(req.params.id);
     console.log(parsedId);
-    if (isNaN(parsedId)) 
+    if (isNaN(parsedId))
         return res.status(400).send({ msg: 'Bad Request. Invalid Number' });
 
     const findUser = mockUsers.find((user) => user.id === parsedId)
@@ -72,15 +72,32 @@ app.put("/api/users/:id", (req, res) => {
     );
 
     if (findUserIndex === -1) return res.sendStatus(404);
-
-    mockUsers[findUserIndex]= {id: parsedId, ...body};
+    mockUsers[findUserIndex] = { id: parsedId, ...body };
 
     return res.sendStatus(200);
 })
 
 
 
+//patch request
+app.patch("/api/users/:id", (req, res) => {
+    const {
+        body,
+        params: { id },
+    } = req;
 
+    const parsedId = parseInt(id);
+    if (isNaN(parsedId)) return res.sendStatus(400);
+
+    const findUserIndex = mockUsers.findIndex(
+        (user) => user.id === parsedId
+    );
+    if (findUserIndex === -1) return res.sendStatus(404);
+
+    mockUsers[findUserIndex] = { ...mockUsers[findUserIndex], ...body };
+    return res.sendStatus(200);
+
+})
 
 
 
