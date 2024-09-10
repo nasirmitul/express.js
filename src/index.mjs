@@ -1,4 +1,6 @@
 import express from "express";
+import { query } from "express-validator";
+
 
 const app = express();
 app.use(express.json());
@@ -51,7 +53,7 @@ app.get("/", (req, res, next) => {
     res.status(201).send({ msg: "Hello" });
 });
 
-app.get("/api/users", (req, res) => {
+app.get("/api/users", query('filter').isString().notEmpty() , (req, res) => {
     console.log(req.query);
     const {
         query: { filter, value },
@@ -66,7 +68,6 @@ app.get("/api/users", (req, res) => {
         );
 
     return res.send(mockUsers)
-
 });
 
 //post request
@@ -120,7 +121,7 @@ app.put("/api/users/:id", resolveIndexByUserId, (req, res) => {
 //patch request
 app.patch("/api/users/:id", resolveIndexByUserId, (req, res) => {
     const { body, findUserIndex } = req;
-    
+
     mockUsers[findUserIndex] = { ...mockUsers[findUserIndex], ...body };
     return res.sendStatus(200);
 })
@@ -141,11 +142,3 @@ app.delete("/api/users/:id", (req, res) => {
     mockUsers.splice(findUserIndex, 1);
     return res.send(200);
 })
-
-
-
-
-
-
-
-
