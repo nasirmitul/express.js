@@ -1,17 +1,9 @@
 import express from "express";
-
-import userRouter from "./routes/users.mjs";
-import productsRouter from "./routes/Products.mjs"
+import routes from "./routes/index.mjs";
 
 const app = express();
 app.use(express.json());
-app.use(userRouter);
-app.use(productsRouter);
-
-const loggingMiddleware = (req, res, next) => {
-  console.log(`${req.method} - ${req.url}`);
-  next();
-};
+app.use(routes);
 
 const PORT = process.env.PORT || 3000;
 
